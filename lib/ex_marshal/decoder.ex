@@ -177,11 +177,11 @@ defmodule ExMarshal.Decoder do
     end
   end
 
-  defp decode_raw_string(<<str_length::8, value::binary>>, state) do
-    {str_bytes, _, state} = decode_fixnum(<<str_length>>, state)
-    <<value::size(str_bytes)-bytes, rest::binary>> = value
+  defp decode_raw_string(<<value::binary>>, state) do
+    {str_bytes, value, state} = decode_fixnum(value, state)
+    <<str::size(str_bytes)-bytes, rest::binary>> = value
 
-    {value, rest, state}
+    {str, rest, state}
   end
 
   defp decode_linked_symbol(<<link::8, rest::binary>>, state) do
